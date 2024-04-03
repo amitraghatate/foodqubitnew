@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .signup-container {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+
+        .signup-form {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-left:130px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .prev-button {
+            background-color: #fffcfc;
+            color: rgb(147, 137, 137);
+            text-align: left;
+          }
+    </style>
+    {% load static %} 
+</head>
+
+<body>
+    <div class="signup-container">
+        <form id="signup-form" class="signup-form" method="post" action="{% url 'signup' %}">
+            {% csrf_token %}
+
+            <!-- Step 1 -->
+            <div class="form-step active" data-step="1">
+                <img class="logo" src="{% static 'myapp/images/logo.png' %}" alt="Logo">
+
+                <input placeholder="Phone Number" type="text" id="phone_number" name="phone_number" required>
+                <input placeholder="Email Address" type="email" id="email" name="email" required>
+                <input placeholder="Password" type="password" id="password" name="password" required>
+                <button class="next-button d-grid gap-2 col-12 mx-auto rounded-pill" onclick="nextStep(1)">Sign
+                    Up</button>
+                <button class="google-button d-grid gap-2 col-12 mx-auto my-2 btn active rounded-pill"
+                    onclick="signUpWithGoogle()">Sign Up with Google</button>
+                <p class="fw-light text-center my-1">Already a user?</p>
+                <a href="/login"  class="btn btn-light btn-outline-dark my-2 gap-2 col-12 rounded-pill" role="button" >Login</a>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="form-step my-2" data-step="2">
+                <button class="prev-button" onclick="prevStep(1)">&#8249; Basic Details</button>
+                <label for="name"><h2>What is your name?</h2></label>
+                <input placeholder="Your name" type="text" id="name" name="name" required>
+                <div class="form-group">
+                    <label for="gender"><h2>What is your gender?</h2></label>
+                    <select id="gender" name="gender" required>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <label for="age"><h2>How old are you?</h2></label>
+                <input type="number" id="age" name="age" required>
+                <button class="next-button d-grid gap-2 col-12 mx-auto rounded-pill" onclick="nextStep(2)">Next</button>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="form-step" data-step="3">
+                <button class="prev-button" onclick="prevStep(2)">&#8249; Basic Details</button>
+                <label for="current_weight"><h2>What is your current weight?</h2></label>
+                <input type="number" id="a" name="current_weight" required>
+                <label for="current_height"><h2>What is your current height?</h2></label>
+                <input type="number" id="b" name="current_height" required>
+                <label for="bmi"><h2>BMI</h2></label>
+                <input type="text" id="c" name="bmi" >
+                <button class="next-button d-grid gap-2 col-12 mx-auto rounded-pill" onclick="nextStep(3)">Next</button>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="form-step" data-step="4">
+                
+                <fieldset data-role="controlgroup">
+                    <button class="prev-button" onclick="prevStep(3)">&#8249; Basic Details</button>
+                    <legend>What is your education?</legend>
+                    <div class="btn btn-outline-info d-grid gap-2 my-1" >
+                    <label for="1">Graduate or Postgraduate</label>
+                    <input class="text-end" type="checkbox" name="education_details" id="1" value="1" checked></div>
+                    <div class="btn btn-outline-info d-grid gap-2 my-1" >
+                    <label for="2">Intermediate or Post-high school diploma</label>
+                    <input type="checkbox" name="education_details" id="2" value="2"></div>
+                    <div class="btn btn-outline-info d-grid gap-2 my-1" >
+                    <label for="3">High school certificate</label>
+                    <input type="checkbox" name="education_details" id="3" value="3" ></div>
+                    <div class="btn btn-outline-info d-grid gap-2 my-1" >
+                    <label for="4">Middle school certificate</label>
+                  <input type="checkbox" name="education_details" id="4" value="4"></div>
+                  <div class="btn btn-outline-info d-grid gap-2 my-1" >
+                  <label for="5">Primary school certificate</label>
+                  <input type="checkbox" name="education_details" id="5" value="5"></div>
+                  <div class="btn btn-outline-info d-grid gap-2 my-1" >
+                  <label for="6">Illiterate</label>
+                  <input type="checkbox" name="education_details" id="6" value="6"></div>
+                </fieldset>
+                <button class="next-button d-grid gap-2 col-12 mx-auto rounded-pill" onclick="nextStep(4)">Next</button>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="form-step" data-step="5">
+                <button class="prev-button" onclick="prevStep(4)">&#8249; Basic Details</button>
+                <h2>Step 4: Confirmation</h2>
+                <p>Your account has been created successfully!</p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const formSteps = document.querySelectorAll('.form-step');
+            const progressBars = document.querySelectorAll('.progress-bar');
+            let currentStep = 1;
+
+            function showStep(stepNumber) {
+                formSteps.forEach(step => {
+                    step.classList.remove('active');
+                });
+
+                const currentFormStep = document.querySelector(`.form-step[data-step="${stepNumber}"]`);
+                currentFormStep.classList.add('active');
+
+                updateProgressBar(stepNumber);
+            }
+
+            function nextStep() {
+                if (currentStep < formSteps.length) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            }
+
+            function prevStep() {
+                if (currentStep > 1) {
+                    currentStep--;
+                    showStep(currentStep);
+                }
+            }
+
+            function updateProgressBar(currentStep) {
+                const progress = (currentStep - 1) / (formSteps.length - 1) * 100;
+                progressBars[currentStep - 1].style.width = `${progress}%`;
+            }
+
+            // Modify the form submission logic based on your actual form and backend URL
+            const signupForm = document.getElementById('signup-form');
+            signupForm.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent the default form submission behavior
+
+                // Add your form submission logic here, e.g., using fetch API
+                fetch('/signup/', {
+                    method: 'POST',
+                    body: new FormData(signupForm),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle the form submission response
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+
+            // Attach event listeners to the "Next" and "Previous" buttons
+            document.querySelectorAll('.next-button').forEach(button => {
+                button.addEventListener('click', nextStep);
+            });
+
+            document.querySelectorAll('.prev-button').forEach(button => {
+                button.addEventListener('click', prevStep);
+            });
+        });
+        
+    </script>
+</body>
+
+</html>

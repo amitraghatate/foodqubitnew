@@ -76,14 +76,14 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'company',
-    #     'USER': 'root',
-    #     'PASSWORD': '00b7a20c86ebe69b',
-    #     'HOST': '103.146.242.170',
-    #     'PORT': '3306',
-    # }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'company',
+        'USER': 'root',
+        'PASSWORD': '00b7a20c86ebe69b',
+        'HOST': '103.146.242.170',
+        'PORT': '3306',
+    }
 }
 
 AUTHENTICATION_BACKENDS = [
